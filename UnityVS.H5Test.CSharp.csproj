@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\EditDirector.cs" />
+    <Compile Include="Assets\Script\Global\DestroyManager.cs" />
+    <Compile Include="Assets\Script\Global\ResgistDestroy.cs" />
     <Compile Include="Assets\Script\LoadDirector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

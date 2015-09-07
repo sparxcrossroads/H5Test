@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\EditDirector.cs" />
+     <Compile Include="Assets\Script\Global\DestroyManager.cs" />
+     <Compile Include="Assets\Script\Global\ResgistDestroy.cs" />
      <Compile Include="Assets\Script\LoadDirector.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
