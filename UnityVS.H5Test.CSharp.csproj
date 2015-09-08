@@ -65,7 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\EditDirector.cs" />
+    <Compile Include="Assets\Script\EditTogglePrefab.cs" />
     <Compile Include="Assets\Script\Global\DestroyManager.cs" />
+    <Compile Include="Assets\Script\Global\GameDataKit.cs" />
     <Compile Include="Assets\Script\Global\ResgistDestroy.cs" />
     <Compile Include="Assets\Script\LoadDirector.cs" />
   </ItemGroup>
