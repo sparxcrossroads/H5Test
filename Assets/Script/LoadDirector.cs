@@ -4,17 +4,35 @@ using System.Collections;
 public class LoadDirector : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-        Application.LoadLevelAdditive("show");
+    private AsyncOperation async;
+    int progress = 0;
 
-        Debug.Log("loading show scene");
+	void Start () {
+       
+       Debug.Log("loading show scene");
+      
+
+
+        //Application.LoadLevelAdditive("show");
+       StartCoroutine(LoadingNext());
 	}
+
+    private IEnumerator LoadingNext()
+    {
+        yield return new WaitForSeconds(3.0f);
+        async = Application.LoadLevelAdditiveAsync("show");
+        yield return async;
+    }
 
     private bool active_show = false;
 
     void Update()
     {
-        if (Application.GetStreamProgressForLevel("show") == 1 && active_show==false)
+        if (async == null)
+            return;
+        progress = (int)async.progress*100;
+
+        if (progress == 100 && active_show == false)
         {
             DestroyLoadingScene();
             active_show = true;
@@ -22,7 +40,7 @@ public class LoadDirector : MonoBehaviour {
     }
 
 
-    private void DestroyLoadingScene()
+    private static void DestroyLoadingScene()
     {
         Debug.Log("loading scene ruining");
         DestroyManager.ClearGameObject();

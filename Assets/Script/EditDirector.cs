@@ -10,7 +10,12 @@ public class EditDirector : MonoBehaviour {
 
     public GameObject[] editModleNodes;
 
+    public GameObject textEditObj;
+    public GameObject imageEditObj;
 
+
+    public InputField TextEditIF;
+    public InputField fontsizeIF;
 
     #region  data
 
@@ -18,6 +23,11 @@ public class EditDirector : MonoBehaviour {
                                                                                 { "Toggle-start", "startNode" },
                                                                                 { "Toggle-gaming", "gamingNode" },
                                                                                 { "Toggle-gameover", "gameoverNode" }};
+
+
+
+    private EditTogglePrefab curEditData;
+
     #endregion
 
 
@@ -57,6 +67,32 @@ public class EditDirector : MonoBehaviour {
     public void UpdateEditItem(GameObject obj)
     {
 
+        EditTogglePrefab data = obj.GetComponent<EditTogglePrefab>();
+
+        curEditData = data;
+
+        if(data.type==EditItemType.image)
+        {
+            imageEditObj.SetActive(true);
+            textEditObj.SetActive(false);
+
+            TextEditIF.text = data.transform.GetChild(2).gameObject.GetComponent<Text>().text;
+            fontsizeIF.text = data.transform.GetChild(2).gameObject.GetComponent<Text>().fontSize.ToString();
+        }
+        else
+        {
+            imageEditObj.SetActive(false);
+            textEditObj.SetActive(true);
+        }
+       
+    }
+
+
+    public void OnTextEditSaveBtnPressed()
+    {
+        curEditData.des_text.text = TextEditIF.text;
+        curEditData.des_text.fontSize = int.Parse(fontsizeIF.text);
+
     }
 
     #endregion
@@ -84,6 +120,7 @@ public class EditDirector : MonoBehaviour {
     IEnumerator ToLoadingScene()
     {
         yield return null;
+        Debug.Log("~~~ sads");
         Application.LoadLevelAdditive("loading");
     }
 	// Update is called once per frame
