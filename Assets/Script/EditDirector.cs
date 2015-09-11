@@ -15,14 +15,36 @@ public class EditDirector : MonoBehaviour {
 
 
     // edit text
-    public InputField TextEditIF;
-    public InputField fontsizeIF;
+    //public InputField TextEditIF;
+    //public InputField fontsizeIF;
 
+    public Text textEditT;
+    public Text fontSizeT;
+
+    public FontStyle font_style = FontStyle.Normal;
 
     public bool font_bold = false;
     public bool font_italic = false;
     public int font_size = 20; //region
     public Color font_color = new Color();
+
+    // drawing board
+    public GameObject drawBoardObj;
+
+    public Slider slider_R;
+    public Slider slider_G;
+    public Slider slider_B;
+
+    public Text sliderRT;
+    public Text sliderGT;
+    public Text sliderBT;
+
+    public Image image_Mix;
+
+    public float color_R;
+    public float color_G;
+    public float color_B;
+    public Color color_new;
 
     #region  data
 
@@ -73,6 +95,7 @@ public class EditDirector : MonoBehaviour {
 
     public void UpdateEditItem(GameObject obj)
     {
+        drawBoardObj.SetActive(true);
 
         EditTogglePrefab data = obj.GetComponent<EditTogglePrefab>();
 
@@ -90,21 +113,74 @@ public class EditDirector : MonoBehaviour {
             imageEditObj.SetActive(false);
             textEditObj.SetActive(true);
 
-           
+            RefreshEditTextArea();
         }
        
     }
 
-    private void RefreahEditTextArea()
+
+    private void RefreshEditTextArea()
     {
-        TextEditIF.text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>().text;
-        fontsizeIF.text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>().fontSize.ToString();
+        Text _test = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
+
+        font_style = _test.fontStyle;
+        switch (font_style)
+        {
+            case FontStyle.Normal:
+                font_bold = false;
+                font_italic = false;
+                break;
+            case FontStyle.Bold:
+                font_bold = true;
+                font_italic = false;
+                break;
+            case FontStyle.Italic:
+                font_bold = false;
+                font_italic = true;
+                break;
+            case FontStyle.BoldAndItalic:
+                font_bold = true;
+                font_italic = true;
+                break;
+        }
+
+        font_size = _test.fontSize;
+        font_color = _test.color;
+
+        color_R = _test.color.r;
+        color_G = _test.color.g;
+        color_B = _test.color.b;
+
+        Debug.Log("color_R: " + color_R);
+
+        textEditT.text = _test.text;
+        textEditT.fontStyle = font_style;
+        textEditT.fontSize = font_size;
+        textEditT.color = font_color;
+
+
+        fontSizeT.text = font_size.ToString();
+
+        slider_R.value = color_R;
+        slider_G.value = color_G;
+        slider_B.value = color_B;
+        color_new = font_color;
+
+        image_Mix.color = font_color;
+
     }
+
+
     public void OnTextEditSaveBtnPressed()
     {
-        curEditData.des_text.text = TextEditIF.text;
-        curEditData.des_text.fontSize = int.Parse(fontsizeIF.text);
+        Text res_text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
 
+        res_text.text = textEditT.text;
+        res_text.fontStyle = font_style;
+        res_text.fontSize = font_size;
+        res_text.color = font_color;
+
+        drawBoardObj.SetActive(false);
     }
 
     #endregion
@@ -115,6 +191,90 @@ public class EditDirector : MonoBehaviour {
 
     #region  general edit
 
+    private void ChangeFontStyle()
+    {
+        // normal
+        if (!font_bold && !font_italic)
+        {
+            font_style = FontStyle.Normal;
+        }
+
+        //bold
+        if (font_bold && !font_italic)
+        {
+            font_style = FontStyle.Bold;
+        }
+
+        //italic
+        if (!font_bold && font_italic)
+        {
+            font_style = FontStyle.Italic;
+        }
+
+        // bold & italic
+        if (font_bold && font_italic)
+        {
+            font_style = FontStyle.BoldAndItalic;
+        }
+        
+    }
+    public void OnTextEdit_BoldBtnPressed()
+    {
+        font_bold = !font_bold;
+        ChangeFontStyle();
+
+        textEditT.fontStyle = font_style;
+    }
+
+    public void OnTextEdit_ItalicBtnPressed()
+    {
+        font_italic = !font_italic;
+        ChangeFontStyle();
+
+        textEditT.fontStyle = font_style;
+    }
+
+    public void OnTextEdit_FontSizeIFChanged()
+    {
+        font_size = int.Parse(fontSizeT.text);
+        textEditT.fontSize = font_size;
+    }
+
+    //drawing board
+    public void OnTextEdit_ColorBtnPressd()
+    {
+        if (drawBoardObj.activeInHierarchy)
+            drawBoardObj.SetActive(false);
+        else
+            drawBoardObj.SetActive(true);
+    }
+
+    public void OnTextEdit_SliderRChanged()
+    {
+        color_R = slider_R.value;
+        color_new.r = color_R;
+        image_Mix.color = color_new;
+
+        sliderRT.text = ((int)(color_R * 256)).ToString();
+    }
+
+    public void OnTextEdit_SliderGChanged()
+    {
+        color_G = slider_G.value;
+        color_new.g = color_G;
+        image_Mix.color = color_new;
+
+        sliderGT.text = ((int)(color_G * 256)).ToString();
+    }
+
+    public void OnTextEdit_SliderBChanged()
+    {
+        color_B = slider_B.value;
+        color_new.b = color_B;
+        image_Mix.color = color_new;
+
+        sliderBT.text = ((int)(color_B * 256)).ToString();
+    }
 
     #endregion
 
