@@ -14,8 +14,15 @@ public class EditDirector : MonoBehaviour {
     public GameObject imageEditObj;
 
 
+    // edit text
     public InputField TextEditIF;
     public InputField fontsizeIF;
+
+
+    public bool font_bold = false;
+    public bool font_italic = false;
+    public int font_size = 20; //region
+    public Color font_color = new Color();
 
     #region  data
 
@@ -76,18 +83,23 @@ public class EditDirector : MonoBehaviour {
             imageEditObj.SetActive(true);
             textEditObj.SetActive(false);
 
-            TextEditIF.text = data.transform.GetChild(2).gameObject.GetComponent<Text>().text;
-            fontsizeIF.text = data.transform.GetChild(2).gameObject.GetComponent<Text>().fontSize.ToString();
+            
         }
         else
         {
             imageEditObj.SetActive(false);
             textEditObj.SetActive(true);
+
+           
         }
        
     }
 
-
+    private void RefreahEditTextArea()
+    {
+        TextEditIF.text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>().text;
+        fontsizeIF.text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>().fontSize.ToString();
+    }
     public void OnTextEditSaveBtnPressed()
     {
         curEditData.des_text.text = TextEditIF.text;
