@@ -26,7 +26,7 @@ public class EditDirector : MonoBehaviour {
     public bool font_bold = false;
     public bool font_italic = false;
     public int font_size = 20; //region
-    public Color font_color = new Color();
+    public Color font_color = new Color(0,0,0,255);
 
     // drawing board
     public GameObject drawBoardObj;
@@ -44,7 +44,7 @@ public class EditDirector : MonoBehaviour {
     public float color_R;
     public float color_G;
     public float color_B;
-    public Color color_new;
+    public Color color_new=new Color(0,0,0,255);
 
     #region  data
 
@@ -119,69 +119,7 @@ public class EditDirector : MonoBehaviour {
     }
 
 
-    private void RefreshEditTextArea()
-    {
-        Text _test = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
-
-        font_style = _test.fontStyle;
-        switch (font_style)
-        {
-            case FontStyle.Normal:
-                font_bold = false;
-                font_italic = false;
-                break;
-            case FontStyle.Bold:
-                font_bold = true;
-                font_italic = false;
-                break;
-            case FontStyle.Italic:
-                font_bold = false;
-                font_italic = true;
-                break;
-            case FontStyle.BoldAndItalic:
-                font_bold = true;
-                font_italic = true;
-                break;
-        }
-
-        font_size = _test.fontSize;
-        font_color = _test.color;
-
-        color_R = _test.color.r;
-        color_G = _test.color.g;
-        color_B = _test.color.b;
-
-        Debug.Log("color_R: " + color_R);
-
-        textEditT.text = _test.text;
-        textEditT.fontStyle = font_style;
-        textEditT.fontSize = font_size;
-        textEditT.color = font_color;
-
-
-        fontSizeT.text = font_size.ToString();
-
-        slider_R.value = color_R;
-        slider_G.value = color_G;
-        slider_B.value = color_B;
-        color_new = font_color;
-
-        image_Mix.color = font_color;
-
-    }
-
-
-    public void OnTextEditSaveBtnPressed()
-    {
-        Text res_text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
-
-        res_text.text = textEditT.text;
-        res_text.fontStyle = font_style;
-        res_text.fontSize = font_size;
-        res_text.color = font_color;
-
-        drawBoardObj.SetActive(false);
-    }
+    
 
     #endregion
 
@@ -234,20 +172,27 @@ public class EditDirector : MonoBehaviour {
         textEditT.fontStyle = font_style;
     }
 
-    public void OnTextEdit_FontSizeIFChanged()
+    public void OnTextEdit_FontSizeIFEndEdit()
     {
         font_size = int.Parse(fontSizeT.text);
         textEditT.fontSize = font_size;
     }
 
     //drawing board
-    public void OnTextEdit_ColorBtnPressd()
+
+    public void OnTextEdit_ColorBtnPressed()
+    {
+        textEditT.color=color_new;
+    }
+
+    public void OnTextEdit_DrawboardBtnPressd()
     {
         if (drawBoardObj.activeInHierarchy)
             drawBoardObj.SetActive(false);
         else
             drawBoardObj.SetActive(true);
     }
+
 
     public void OnTextEdit_SliderRChanged()
     {
@@ -274,6 +219,71 @@ public class EditDirector : MonoBehaviour {
         image_Mix.color = color_new;
 
         sliderBT.text = ((int)(color_B * 256)).ToString();
+    }
+
+
+    private void RefreshEditTextArea()
+    {
+        Text _test = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
+
+        font_style = _test.fontStyle;
+        switch (font_style)
+        {
+            case FontStyle.Normal:
+                font_bold = false;
+                font_italic = false;
+                break;
+            case FontStyle.Bold:
+                font_bold = true;
+                font_italic = false;
+                break;
+            case FontStyle.Italic:
+                font_bold = false;
+                font_italic = true;
+                break;
+            case FontStyle.BoldAndItalic:
+                font_bold = true;
+                font_italic = true;
+                break;
+        }
+
+        font_size = _test.fontSize;
+        font_color = _test.color;
+
+        color_R = _test.color.r;
+        color_G = _test.color.g;
+        color_B = _test.color.b;
+
+        Debug.Log("color_R: " + color_R);
+
+        textEditT.text = _test.text;
+        textEditT.fontStyle = font_style;
+        textEditT.fontSize = font_size;
+        textEditT.color = font_color;
+
+
+        fontSizeT.text = font_size.ToString();
+
+        slider_R.value = color_R;
+        slider_G.value = color_G;
+        slider_B.value = color_B;
+        color_new = font_color;
+
+        image_Mix.color = font_color;
+
+    }
+
+
+    public void OnTextEdit_SaveBtnPressed()
+    {
+        Text res_text = curEditData.transform.GetChild(2).gameObject.GetComponent<Text>();
+
+        res_text.text = textEditT.text;
+        res_text.fontStyle = font_style;
+        res_text.fontSize = font_size;
+        res_text.color = font_color;
+
+        drawBoardObj.SetActive(false);
     }
 
     #endregion
