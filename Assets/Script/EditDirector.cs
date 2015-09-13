@@ -26,7 +26,7 @@ public class EditDirector : MonoBehaviour {
     public bool font_bold = false;
     public bool font_italic = false;
     public int font_size = 20; //region
-    public Color font_color = new Color(0,0,0,255);
+    public Color font_color = Color.white;
 
     // drawing board
     public GameObject drawBoardObj;
@@ -41,10 +41,10 @@ public class EditDirector : MonoBehaviour {
 
     public Image image_Mix;
 
-    public float color_R;
-    public float color_G;
-    public float color_B;
-    public Color color_new=new Color(0,0,0,255);
+    private float color_R;
+    private float color_G;
+    private float color_B;
+    private Color color_new = Color.white;
 
     #region  data
 
@@ -95,7 +95,7 @@ public class EditDirector : MonoBehaviour {
 
     public void UpdateEditItem(GameObject obj)
     {
-        drawBoardObj.SetActive(true);
+        drawBoardObj.SetActive(false);
 
         EditTogglePrefab data = obj.GetComponent<EditTogglePrefab>();
 
@@ -196,8 +196,10 @@ public class EditDirector : MonoBehaviour {
 
     public void OnTextEdit_SliderRChanged()
     {
+        Debug.Log("old: " + color_new.a);
+
         color_R = slider_R.value;
-        color_new.r = color_R;
+
         image_Mix.color = color_new;
 
         sliderRT.text = ((int)(color_R * 256)).ToString();
@@ -267,7 +269,7 @@ public class EditDirector : MonoBehaviour {
         slider_R.value = color_R;
         slider_G.value = color_G;
         slider_B.value = color_B;
-        color_new = font_color;
+        //color_new = font_color;
 
         image_Mix.color = font_color;
 
@@ -281,7 +283,11 @@ public class EditDirector : MonoBehaviour {
         res_text.text = textEditT.text;
         res_text.fontStyle = font_style;
         res_text.fontSize = font_size;
-        res_text.color = font_color;
+        
+        //res_text.color = font_color;
+
+        res_text.color = Color.red;
+
 
         drawBoardObj.SetActive(false);
     }
@@ -297,6 +303,7 @@ public class EditDirector : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         StartCoroutine(ToLoadingScene());
+
 	}
 
     IEnumerator ToLoadingScene()
